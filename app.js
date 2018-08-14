@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var abc = require('./models/abc');
+var event = require('./models/event');
+
 var Abc = require('./routes/abc');
 
 var users = require('./routes/users');

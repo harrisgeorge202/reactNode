@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
+
 var abcDB = mongoose.model('abc');
+var eventModel = mongoose.model('event');
+
 
 module.exports = {
     insert: function(req, res) {
@@ -43,8 +46,73 @@ if(req.body.username && req.body.email_id && req.body.password) {
     },
 
 
+    
+    eventCreate: async function (req, res, next) {
+        try {
+             console.log("create event ", req.body);
+            if (req.body.username) {
+                // abcDB.findOne({ username: req.body.username, password: req.body.password})
+
+                    var user = await abcDB.findOne({ username: req.body.username  })
+                    console.log("USERRRRRRRRRR", user)
+                    if (!user)
+                        throw new Error('No user found.');
+                    if (user) {
+                        var event = await eventModel.create({
+                            name: req.body.name,
+                            admin: user.id,
+                            tag: req.body.tag,
+                            description: req.body.description
+                        })
+  
+                        return res.status(200).json({ event: event });
+                    }
+                
+            }
+            if (!req.body.name)
+                throw new Error('No name found.');
+        } catch (err) {
+            console.log("Error", err.message)
+            return res.status(400).json({ status: false, message: err.message })
+        }
+    },
 
 
+
+
+    eventUpdate: async function (req, res, next) {
+        try {
+            var data = await eventModel.find({  id: req.body.id  })
+            console.log("dataaaaaaaa", data)
+
+
+
+
+            if (data) {
+                var update = await eventModel.findOneAndUpdate({_id: req.body.id,}, 
+        { $set: { name: req.body.name ,tag: req.body.tag ,description: req.body.description } },{new:true},
+                
+        function (err, rule) {
+            if (err) {return res.status(400).json(err)} 
+            else {
+                return res.status(200).json({ event: rule });
+            }
+                // data.updateAttributes({
+                //     name: req.body.name,
+                //     tag: req.body.tag,
+                //     description: req.body.description
+                // })
+            
+        })
+    }
+            if (!data) {
+                throw new Error('No data provided.');
+            }
+        } catch (err) {
+            console.log("Error", err.message)
+            return res.status(400).json({ status: false, message: err.message })
+        }
+    },
 
 
 

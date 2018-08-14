@@ -2,11 +2,23 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var abc = require('../models/abc');
+var event = require('../models/event');
+
 // var ValidationController = require('./../controller/Validation')
 var abcController = require('./../controller/abc');
 
 router.post('/register', abcController.insert);
 router.post('/login', abcController.login);
+
+
+
+
+router.post('/event/create', abcController.eventCreate);
+router.post('/event/update', abcController.eventUpdate);
+// router.get('/event/listevent', abcController.eventList);
+
+
+
 
 
 router.post("/addname", (req, res) => {
