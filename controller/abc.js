@@ -84,10 +84,6 @@ if(req.body.username && req.body.email_id && req.body.password) {
         try {
             var data = await eventModel.find({  id: req.body.id  })
             console.log("dataaaaaaaa", data)
-
-
-
-
             if (data) {
                 var update = await eventModel.findOneAndUpdate({_id: req.body.id,}, 
         { $set: { name: req.body.name ,tag: req.body.tag ,description: req.body.description } },{new:true},
@@ -97,12 +93,6 @@ if(req.body.username && req.body.email_id && req.body.password) {
             else {
                 return res.status(200).json({ event: rule });
             }
-                // data.updateAttributes({
-                //     name: req.body.name,
-                //     tag: req.body.tag,
-                //     description: req.body.description
-                // })
-            
         })
     }
             if (!data) {
@@ -116,6 +106,59 @@ if(req.body.username && req.body.email_id && req.body.password) {
 
 
 
+
+
+    eventDelete: async function (req, res, next) {
+        try {
+
+            var user = await abcDB.findOne({_id: req.body.id  })
+                if (!user)
+                    throw new Error('No user found.');
+                if (user) {
+                    console.log("userrrrrrrrrrrrrrrr", user)
+                    var allEvents = await eventModel.findOne({  admin: user._id  }).remove(function (err, rule) {
+                        if (err) {
+                            return res.status(400).json({ status: false, message: 'Databse error', data: err })
+                        } 
+                        else 
+                        {
+                            return res.status(200).json({ status: true, events: allEvents })
+                        }
+                    })
+                }
+        } catch (err) {
+            console.log("Error", err.message)
+            return res.status(400).json({ status: false, message: err.message })
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+    eventList: async function (req, res, next) {
+        try {
+
+            var user = await abcDB.findOne({_id: req.body.id  })
+                if (!user)
+                    throw new Error('No user found.');
+                if (user) {
+                    console.log("userrrrrrrrrrrrrrrr", user)
+                    var allEvents = await eventModel.find({  admin: user._id  })
+                    return res.status(200).json({ status: true, events: allEvents });
+                }
+        } catch (err) {
+            console.log("Error", err.message)
+            return res.status(400).json({ status: false, message: err.message })
+        }
+    },
 
 
 

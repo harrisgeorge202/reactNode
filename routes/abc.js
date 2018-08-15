@@ -15,6 +15,8 @@ router.post('/login', abcController.login);
 
 router.post('/event/create', abcController.eventCreate);
 router.post('/event/update', abcController.eventUpdate);
+router.post('/event/list', abcController.eventList);
+
 // router.get('/event/listevent', abcController.eventList);
 
 
