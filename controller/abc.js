@@ -65,9 +65,8 @@ if(req.body.username && req.body.email_id && req.body.password) {
                             description: req.body.description
                         })
   
-                        return res.status(200).json({ event: event });
+                        return res.status(200).json({ status: true, event: event });
                     }
-                
             }
             if (!req.body.name)
                 throw new Error('No name found.');
@@ -145,8 +144,11 @@ if(req.body.username && req.body.email_id && req.body.password) {
 
     eventList: async function (req, res, next) {
         try {
+console.log("222222222222222222222222")
+            var user = await abcDB.findOne({ _id: req.params.user_id})
 
-            var user = await abcDB.findOne({_id: req.body.id  })
+            console.log("1111111111111111111111111111")
+
                 if (!user)
                     throw new Error('No user found.');
                 if (user) {
