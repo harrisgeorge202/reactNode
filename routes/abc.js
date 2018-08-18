@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
+
+
+var userModel = require('../models/user');
 var abc = require('../models/abc');
 var event = require('../models/event');
 
@@ -15,9 +18,13 @@ router.post('/login', abcController.login);
 
 router.post('/event/create', abcController.eventCreate);
 router.post('/event/update', abcController.eventUpdate);
-router.get('/eventlist/:user_id', abcController.eventList);
+router.post('/event/delete', abcController.eventDelete);
+router.get('/event/list', abcController.eventList);
 
-// router.get('/event/listevent', abcController.eventList);
+
+
+
+// router.get('/eventlist/:user_id', abcController.eventList);
 
 
 
